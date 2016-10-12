@@ -2,21 +2,28 @@
 
 Darling is a personnal programming assisant.
 
+
 ## Installation
 
+Requires ``zenity``.
 
-TODO: Write installation instructions here
+```
+make install
+make build
+```
 
 
 ## Usage
 
+```
+./Darling
+```
 
-
-TODO: Write usage instructions here
 
 ## Development
 
 TODO: Write development instructions here
+
 
 ## Contributing
 

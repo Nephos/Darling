@@ -3,6 +3,12 @@ class Darling::Plugin::Updates < Darling::Plugin
     false
   end
 
+  private def notification(project = "unknown", message = "has an issue", type = "updates")
+    text = "[#{type}] (#{project}): #{message}"
+    `zenity --notification --text="#{text}"`
+    STDOUT.puts text + " " + File.basename(project)
+  end
+
   def permanent_start
     loop do
       crystal_projects = "#{ENV["HOME"]}/Projects/Crystal/*"
@@ -16,9 +22,9 @@ class Darling::Plugin::Updates < Darling::Plugin
             chdir: project)
         end
         if p.wait.exit_status == 256
-          puts "[UPDATES] (Crystal) \"#{project}\" has an issue"
+          notification project
         else
-          puts "[UPDATES] (Crystal) \"#{project}\" has no issue" if config["report_issue"]?
+          notification project, "has no issue" if config["report_issue"]?
         end
       end
       sleep 12.hours
