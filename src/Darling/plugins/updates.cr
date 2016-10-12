@@ -1,33 +1,31 @@
 class Darling::Plugin::Updates < Darling::Plugin
+end
+
+require "./updates/*"
+
+class Darling::Plugin::Updates
+
+  private def notification(project = "unknown", message = "has an issue", type = "updates")
+    text = "[#{type}] (#{File.basename project}): #{message}"
+    `zenity --notification --text="#{text}"`
+    STDOUT.puts text + " " + project
+  end
+
   def short_start
     false
   end
 
-  private def notification(project = "unknown", message = "has an issue", type = "updates")
-    text = "[#{type}] (#{project}): #{message}"
-    `zenity --notification --text="#{text}"`
-    STDOUT.puts text + " " + File.basename(project)
-  end
-
   def permanent_start
     loop do
-      crystal_projects = "#{ENV["HOME"]}/Projects/Crystal/*"
-
-      Dir.glob(crystal_projects) do |project|
-        next if project.match(/.*\/Darling/)
-        p = Process.fork do
-          Process.exec(
-            command: "timeout", args: ["1s", "crystal", "spec", "--stats"],
-            input: false, output: false, error: false,
-            chdir: project)
-        end
-        if p.wait.exit_status == 256
-          notification project
-        else
-          notification project, "has no issue" if config["report_issue"]?
+      crystal = Programming.new("Crystal", "Projects/Crystal", ["shard.yml"],
+                                {"crystal spec" => "Cannot build the project"})
+      crystal.each do |path|
+        crystal.test(path) do |error|
+          notification(path, error)
         end
       end
       sleep 12.hours
     end
   end
+
 end
