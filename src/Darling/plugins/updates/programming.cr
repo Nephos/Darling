@@ -1,9 +1,16 @@
+require "yaml"
 require "./command"
 
 class Darling::Plugin::Updates::Programming
+  YAML.mapping(
+    language: String,
+    path: String,
+    files: Array(String),
+    commands: Array(Command)
+  )
 
   # Langage name ("Ruby", ...)
-  property langage : String
+  property language : String
 
   # Basic path where to find the projects ("Documents/projects" is fine, as we add $HOME before)
   property path : String
@@ -18,10 +25,15 @@ class Darling::Plugin::Updates::Programming
   # TODO: Merge with files to be more reliable
   property commands : Array(Command)
 
-  def initialize(@langage : String, @path : String, @files : Array(String), @commands : Array(Command))
+  def initialize(@language : String,
+                 @path : String,
+                 @files : Array(String),
+                 @commands : Array(Command))
   end
 
-  def initialize(@langage : String, @path : String, @files : Array(String),
+  def initialize(@language : String,
+                 @path : String,
+                 @files : Array(String),
                  commands : Hash(String, Hash(String, Array(Int32) | String)))
     @commands = commands.map do |k, v|
       Command.new(k, v["message"].as(String), v["exit_codes"].as(Array(Int32)))

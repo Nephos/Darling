@@ -1,3 +1,4 @@
+require "./config"
 require "./plugin"
 
 class Darling::Core
@@ -6,6 +7,7 @@ class Darling::Core
 
   def initialize
     @plugins = [] of Plugin
+    @config = Config.new "config.yml"
   end
 
   # def initialize(*plugins : Plugin.class | Plugin)
@@ -15,6 +17,7 @@ class Darling::Core
 
   def initialize(plugins : Array(Plugin.class | Plugin))
     @plugins = [] of Plugin
+    @config = Config.new "config.yml"
     plugins.each { |p| load_plugin p }
   end
 
@@ -31,14 +34,14 @@ class Darling::Core
       spawn do
         puts "Spawn #{p.class}"
         begin
-          p.permanent_start
+          p.permanent_start @config
         rescue e
           STDERR.puts e
           STDERR.puts "Spawn #{p.class} is down"
         end
       end
     end
-    loop { @plugins.select! { |p| p.short_start == false rescue false } ; sleep 0.1 }
+    loop { @plugins.select! { |p| p.short_start(@config) == false rescue false } ; sleep 0.1 }
   end
 
 end

@@ -12,19 +12,14 @@ class Darling::Plugin::Updates
     STDOUT.puts text + " " + project
   end
 
-  def short_start
+  def short_start(config : Config)
     false
   end
 
-  def permanent_start
+  def permanent_start(config : Config)
+    config = config["plugins"]["updates"]
     loop do
-      # TODO: configuration file here
-      languages = {
-        Programming.new("Ruby", "Projects/Ruby", ["Rakefile"],
-                        { "rake test" => {"message" => "Cannot test the project", "exit_codes" => [0] } }),
-        Programming.new("Crystal", "Projects/Crystal", ["shard.yml"],
-                        { "timeout 2s crystal spec" => { "message" => "Cannot build the project", "exit_codes" => [0, 31744] } })
-      }
+      languages = config["programming"].map { |l| Programming.from_yaml(l.to_yaml) }
       languages.each do |prog|
         prog.each do |path|
           prog.test(path) do |error|
@@ -32,7 +27,7 @@ class Darling::Plugin::Updates
           end
         end
       end
-      sleep 12.hours # TODO: configuration
+      sleep config["every"].as_s.to_i.hours # TODO: less dirty way
     end
   end
 

@@ -1,17 +1,18 @@
 plugins:
   updates:
+    every: 12
     programming:
-      ruby:
+      - language: "ruby"
         path: "Projects/Ruby"
         files: ["Rakefile"]
         commands:
-          "rake test":
+          - execute: "rake test"
             message: "Cannot test the project"
             exit_codes: [0]
-      crystal:
+      - language: "crystal"
         path: "Projects/Crystal"
         files: ["shard.yml"]
         commands:
-          "timeout 2s crystal spec":
+          - execute: "timeout 2s crystal spec"
             message: "Cannot build the project"
             exit_codes: [0, 31744]
