@@ -1,13 +1,16 @@
 class Darling::Plugin::Updates < Darling::Plugin
 end
 
+require "notify"
+
 require "./updates/*"
 
 class Darling::Plugin::Updates
   private def notification(project = "unknown", message = "has an issue", type = "updates")
     text = "[#{type}] (#{File.basename project}): #{message}"
     # TODO: Use binding for something maybe
-    `zenity --notification --text="#{text}"`
+
+    Notify.send(File.basename(project), text, nil, "DarlingUpdates")
     STDOUT.puts "#{text} [#{project}]"
   end
 

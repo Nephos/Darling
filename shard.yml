@@ -5,3 +5,7 @@ authors:
   - Arthur Poulet <arthur.poulet@mailoo.org>
 
 license: MIT
+
+dependencies:
+  notify:
+    github: Nephos/notify
