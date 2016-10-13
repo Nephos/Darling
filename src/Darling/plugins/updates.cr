@@ -7,7 +7,8 @@ class Darling::Plugin::Updates
 
   private def notification(project = "unknown", message = "has an issue", type = "updates")
     text = "[#{type}] (#{File.basename project}): #{message}"
-    `zenity --notification --text="#{text}"` # TODO: Use binding for something maybe
+    # TODO: Use binding for something maybe
+    `zenity --notification --text="#{text}"`
     STDOUT.puts text + " " + project
   end
 
@@ -20,9 +21,9 @@ class Darling::Plugin::Updates
       # TODO: configuration file here
       languages = {
         Programming.new("Ruby", "Projects/Ruby", ["Rakefile"],
-                        {"rake test" => "Cannot test the project"}),
+                        { "rake test" => {"message" => "Cannot test the project", "exit_codes" => [0] } }),
         Programming.new("Crystal", "Projects/Crystal", ["shard.yml"],
-                        {"timeout 2s crystal spec" => "Cannot build the project"})
+                        { "timeout 2s crystal spec" => { "message" => "Cannot build the project", "exit_codes" => [0, 31744] } })
       }
       languages.each do |prog|
         prog.each do |path|

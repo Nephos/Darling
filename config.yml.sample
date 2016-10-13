@@ -1,0 +1,17 @@
+plugins:
+  updates:
+    programming:
+      ruby:
+        path: "Projects/Ruby"
+        files: ["Rakefile"]
+        commands:
+          "rake test":
+            message: "Cannot test the project"
+            exit_codes: [0]
+      crystal:
+        path: "Projects/Crystal"
+        files: ["shard.yml"]
+        commands:
+          "timeout 2s crystal spec":
+            message: "Cannot build the project"
+            exit_codes: [0, 31744]
