@@ -46,9 +46,9 @@ class Darling::Plugin::Updates::Programming
     search_base = File.expand_path "*/", base_path
     search_union = @files.map { |f| Dir.glob(File.expand_path(f, search_base)).to_a }
     union = search_union.flatten
-            .map { |f| File.dirname(f) }
-            .reduce({} of String => Int32) { |b, n| b[n] ||= 0; b[n] += 1; b }
-            .select { |k, count| count == @files.size }.keys
+                        .map { |f| File.dirname(f) }
+                        .reduce({} of String => Int32) { |b, n| b[n] ||= 0; b[n] += 1; b }
+                        .select { |k, count| count == @files.size }.keys
     union
   end
 
@@ -93,5 +93,4 @@ class Darling::Plugin::Updates::Programming
     status = p.wait.exit_status
     return cmd.exit_codes.includes?(status) || status == 31744 # accept timeout
   end
-
 end
