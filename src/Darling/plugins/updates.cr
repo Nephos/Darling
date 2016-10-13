@@ -1,38 +1,42 @@
 class Darling::Plugin::Updates < Darling::Plugin
 end
 
+require "notify"
+
 require "./updates/*"
 
 class Darling::Plugin::Updates
-
   private def notification(project = "unknown", message = "has an issue", type = "updates")
     text = "[#{type}] (#{File.basename project}): #{message}"
-    `zenity --notification --text="#{text}"` # TODO: Use binding for something maybe
-    STDOUT.puts text + " " + project
+    # TODO: Use binding for something maybe
+
+    Notify.send(File.basename(project), text, nil, "DarlingUpdates")
+    STDOUT.puts "#{text} [#{project}]"
   end
 
-  def short_start
+  def short_start(config : Config)
     false
   end
 
-  def permanent_start
+  def permanent_start(config : Config)
+    config = config["plugins"]["updates"]
+    languages = config["programming"].map { |l| Programming.from_yaml(l.to_yaml) }
+    arch = Archlinux.new config["archlinux"].to_a.map(&.as_s)
     loop do
-      # TODO: configuration file here
-      languages = {
-        Programming.new("Ruby", "Projects/Ruby", ["Rakefile"],
-                        {"rake test" => "Cannot test the project"}),
-        Programming.new("Crystal", "Projects/Crystal", ["shard.yml"],
-                        {"timeout 2s crystal spec" => "Cannot build the project"})
-      }
-      languages.each do |prog|
-        prog.each do |path|
-          prog.test(path) do |error|
-            notification(path, error)
-          end
-        end
-      end
-      sleep 12.hours # TODO: configuration
+      spawn { _languages_test(languages) rescue puts "Error occured during the language_test" }
+      # TODO: root permission issue here
+      # spawn { _archlinux_test(arch) rescue puts "Error occured during the archlinux_test" }
+      sleep config["every"].as_s.to_i.hours # TODO: less dirty way
     end
   end
 
+  private def _languages_test(languages)
+    languages.each { |prog| prog.each { |path| prog.test(path) { |error| notification(path, error) } } }
+  end
+
+  private def _archlinux_test(arch)
+    if !arch.get_new_list.empty?
+      notification("Archlinux", "Some update to do")
+    end
+  end
 end

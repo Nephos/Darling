@@ -1,0 +1,21 @@
+plugins:
+  updates:
+    every: 12
+    programming:
+      - language: "ruby"
+        path: "Projects/Ruby"
+        files: ["Rakefile"]
+        commands:
+          - execute: "rake test"
+            message: "Cannot test the project"
+            exit_codes: [0]
+      - language: "crystal"
+        path: "Projects/Crystal"
+        files: ["shard.yml"]
+        commands:
+          - execute: "timeout 2s crystal spec"
+            message: "Cannot build the project"
+            exit_codes: [0, 31744]
+    archlinux:
+      - linux
+      - youtube-dl

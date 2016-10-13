@@ -5,7 +5,7 @@ Darling is a personnal programming assisant.
 
 ## Installation
 
-Requires ``zenity``.
+Requires ``libnotify``.
 
 ```
 make install
