@@ -2,7 +2,6 @@ require "./config"
 require "./plugin"
 
 class Darling::Core
-
   getter plugins : Array(Plugin)
 
   def initialize
@@ -41,7 +40,6 @@ class Darling::Core
         end
       end
     end
-    loop { @plugins.select! { |p| p.short_start(@config) == false rescue false } ; sleep 0.1 }
+    loop { @plugins.select! { |p| p.short_start(@config) == false rescue false }; sleep 0.1 }
   end
-
 end

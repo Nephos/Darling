@@ -4,6 +4,7 @@ abstract class Darling::Plugin
   abstract def permanent_start(config : Config)
 
   getter config : Hash(String, String)
+
   def initialize(config : Hash(String, String)? = nil)
     @config = config || Hash(String, String).new
   end

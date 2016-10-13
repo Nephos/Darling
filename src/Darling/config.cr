@@ -1,7 +1,6 @@
 require "yaml"
 
 class Darling::Config
-
   @config_file : String
 
   def initialize(@config_file)
@@ -11,5 +10,4 @@ class Darling::Config
   def [](k)
     @data[k]
   end
-
 end
