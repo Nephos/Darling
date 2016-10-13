@@ -16,3 +16,6 @@ plugins:
           - execute: "timeout 2s crystal spec"
             message: "Cannot build the project"
             exit_codes: [0, 31744]
+    archlinux:
+      - linux
+      - youtube-dl
