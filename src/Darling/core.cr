@@ -1,3 +1,4 @@
+# coding: utf-8
 require "./config"
 require "./plugin"
 
@@ -35,8 +36,7 @@ class Darling::Core
         begin
           p.permanent_start @config
         rescue e
-          STDERR.puts e
-          STDERR.puts "Spawn #{p.class} is down"
+          STDERR.puts "Spawn #{p.class} is down (#{e})"
         end
       end
     end

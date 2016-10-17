@@ -8,8 +8,7 @@ Darling is a personnal programming assisant.
 Requires ``libnotify``.
 
 ```
-make install
-make build
+make
 ```
 
 

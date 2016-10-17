@@ -1,4 +1,4 @@
-all: build
+all: deps build
 
 run:
 	crystal run src/Darling.cr
@@ -8,11 +8,11 @@ release:
 	crystal build src/Darling.cr --stats --release
 test:
 	crystal spec
-install:
+deps:
 	crystal deps install
-update:
+deps_update:
 	crystal deps update
 doc:
 	crystal docs
 
-.PHONY: all run build release test install update doc
+.PHONY: all run build release test deps deps_update doc
