@@ -1,4 +1,4 @@
-all: deps build
+all: deps_opt build
 
 run:
 	crystal run src/Darling.cr
@@ -12,6 +12,8 @@ deps:
 	crystal deps install
 deps_update:
 	crystal deps update
+deps_opt:
+	@[ -d libs/ ] || make deps
 doc:
 	crystal docs
 
