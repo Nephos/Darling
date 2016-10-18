@@ -1,3 +1,5 @@
+require "notify"
+
 abstract class Darling::Plugin
   # executed thousand times. must return false if disabled/unused
   abstract def short_start(config : Config) : Bool
@@ -7,6 +9,11 @@ abstract class Darling::Plugin
 
   def initialize(config : Hash(String, String)? = nil)
     @config = config || Hash(String, String).new
+  end
+
+  def notify(title : String, body : String, timeout : Int32 = -1)
+    Notify.send(title, body, nil)
+    STDOUT.puts "[#{title}] #{body}"
   end
 end
 

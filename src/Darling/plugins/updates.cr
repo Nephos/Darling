@@ -1,17 +1,11 @@
 class Darling::Plugin::Updates < Darling::Plugin
 end
 
-require "notify"
-
 require "./updates/*"
 
-class Darling::Plugin::Updates
+class Darling::Plugin::Updates < Darling::Plugin
   private def notification(project = "unknown", message = "has an issue", type = "updates")
-    text = "[#{type}] (#{File.basename project}): #{message}"
-    # TODO: Use binding for something maybe
-
-    Notify.send(File.basename(project), text, nil, "DarlingUpdates")
-    STDOUT.puts "#{text} [#{project}]"
+    notify File.basename(project), "[#{type}] (#{File.basename project}): #{message}"
   end
 
   def short_start(config : Config)

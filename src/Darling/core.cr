@@ -1,4 +1,5 @@
 # coding: utf-8
+
 require "./config"
 require "./plugin"
 
@@ -15,14 +16,10 @@ class Darling::Core
   #   super(plugins)
   # end
 
-  def initialize(plugins : Array(Plugin.class | Plugin))
+  def initialize(plugins : Array(Plugin))
     @plugins = [] of Plugin
     @config = Config.new "config.yml"
     plugins.each { |p| load_plugin p }
-  end
-
-  def load_plugin(plugin : Plugin.class)
-    @plugins << plugin.new
   end
 
   def load_plugin(plugin : Plugin)
