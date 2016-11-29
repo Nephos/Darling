@@ -6,7 +6,8 @@ class Darling::Plugin::Updates::Programming
     language: String,
     path: String,
     files: Array(String),
-    commands: Array(Command)
+    ignore: Array(String),
+    commands: Array(Command),
   )
 
   # Langage name ("Ruby", ...)
@@ -19,21 +20,26 @@ class Darling::Plugin::Updates::Programming
   # TODO: Array(Array(String)) to accept differents pattern of projects
   property files : Array(String)
 
+  # Project to ignore (["Darling"])
+  property ignore : Array(String)
+
   # Commands to execute to check if everything is ok, with an error message if failed
   # ({"rake test" => "unitary tests has failed"})
   # TODO: Array(Hash(String, String)) to handle differents pattern of projects
   # TODO: Merge with files to be more reliable
   property commands : Array(Command)
 
-  def initialize(@language : String,
-                 @path : String,
-                 @files : Array(String),
-                 @commands : Array(Command))
+  def initialize(@language,
+                 @path,
+                 @files,
+                 @ignore,
+                 @commands)
   end
 
   def initialize(@language : String,
                  @path : String,
                  @files : Array(String),
+                 @ignore : Array(String),
                  commands : Hash(String, Hash(String, Array(Int32) | String)))
     @commands = commands.map do |k, v|
       Command.new(k, v["message"].as(String), v["exit_codes"].as(Array(Int32)))
@@ -79,7 +85,7 @@ class Darling::Plugin::Updates::Programming
   # check if a project in `path` support the `cmd`
   private def test(path, cmd)
     # puts "test(#{path})" # if config["updates"]["verbose"] == true
-    return true if File.basename(path) == "Darling"
+    return true if ignore.includes? File.basename(path)
     p = Process.fork do
       proc = cmd.execute.split(" ")
       proc_command = proc[0]

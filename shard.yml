@@ -7,5 +7,6 @@ authors:
 license: MIT
 
 dependencies:
-  notify:
-    github: Nephos/notify
+  libnotify:
+    github: splattael/libnotify.cr
+    version: ~> 0.2.0

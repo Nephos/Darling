@@ -1,4 +1,4 @@
-require "notify"
+require "libnotify"
 
 abstract class Darling::Plugin
   # executed thousand times. must return false if disabled/unused
@@ -12,7 +12,7 @@ abstract class Darling::Plugin
   end
 
   def notify(title : String, body : String, timeout : Int32 = -1)
-    Notify.send(title, body, nil)
+    Libnotify.new(summary: title, body: body).show
     STDOUT.puts "[#{title}] #{body}"
   end
 end

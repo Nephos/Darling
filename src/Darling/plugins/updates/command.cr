@@ -4,7 +4,7 @@ class Darling::Plugin::Updates::Command
   YAML.mapping(
     execute: String,
     message: String,
-    exit_codes: Array(Int32)
+    exit_codes: Array(Int32),
   )
 
   property execute : String

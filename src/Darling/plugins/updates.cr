@@ -1,3 +1,4 @@
+# coding: utf-8
 class Darling::Plugin::Updates < Darling::Plugin
 end
 

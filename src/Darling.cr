@@ -1,9 +1,9 @@
 require "./Darling/*"
 
-require "notify"
+require "libnotify"
 
-Notify.send "Darling", "Start the Darling assistant", nil, "Darling"
+Libnotify.show summary: "Darling", body: "Start the Darling assistant"
 Darling::Core.new([
-                    # Darling::Plugin::Updates.new,
-                    Darling::Plugin::Storage.new,
-                  ]).start
+  Darling::Plugin::Updates.new,
+  Darling::Plugin::Storage.new,
+]).start

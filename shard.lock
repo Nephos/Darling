@@ -2,9 +2,5 @@ version: 1.0
 shards:
   libnotify:
     github: splattael/libnotify.cr
-    commit: 49ef65648b242d97d4d549f47861dc9bca16a4ac
-
-  notify:
-    github: Nephos/notify
-    commit: f559fdc06d3b5171e43e6df845763abb9eda9f14
+    version: 0.2.0
 
