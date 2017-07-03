@@ -2,6 +2,7 @@
 
 Darling is a personnal programming assisant.
 
+Works with crystal v0.23.0
 
 ## Installation
 
